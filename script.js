@@ -1,5 +1,3 @@
-//your code here
-// Get all draggable image elements
 const images = document.querySelectorAll('.image');
 
 // Store the element being dragged
@@ -18,7 +16,7 @@ images.forEach(image => {
 // Function to handle dragstart event
 function dragStart(e) {
   draggedElement = e.target; // The element being dragged
-  e.dataTransfer.setData('text', draggedElement.innerText); // Store the content of the dragged element
+  e.dataTransfer.setData('text', draggedElement.src); // Store the src of the dragged image
   setTimeout(() => {
     draggedElement.style.opacity = '0.5'; // Reduce opacity for visual feedback
   }, 0);
@@ -43,13 +41,15 @@ function dragLeave(e) {
 // Function to handle the drop action
 function drop(e) {
   e.preventDefault();
-  if (draggedElement !== e.target) {
-    // Swap the positions of the dragged element and the target element
-    const draggedText = draggedElement.innerText;
-    const targetText = e.target.innerText;
-    
-    draggedElement.innerText = targetText;
-    e.target.innerText = draggedText;
+  
+  // Ensure the drop target is a valid .image element
+  if (draggedElement !== e.target && e.target.classList.contains('image')) {
+    // Swap the images by changing their src attributes
+    const draggedSrc = draggedElement.src;
+    const targetSrc = e.target.src;
+
+    draggedElement.src = targetSrc;
+    e.target.src = draggedSrc;
   }
 
   e.target.style.border = ''; // Reset the border after the drop
